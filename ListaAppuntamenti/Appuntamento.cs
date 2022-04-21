@@ -9,42 +9,58 @@ namespace ListaAppuntamenti
     internal class Appuntamento //salva e gestisce gli appuntamenti
     {
         public DateTime dataAppuntamento;
-        public string nome;
-        public string localitaAppuntamento;
+        private string nome;
+        private string localitaAppuntamento;
 
         public Appuntamento(DateTime dataAppuntamento, string nome, string localitaAppuntamento)
         {
-            this.dataAppuntamento = dataAppuntamento;
-
             //controllo la validità della data
-            controlloDataAppuntamento(); 
+            try
+            {
+                controlloDataAppuntamento(this.dataAppuntamento); 
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             this.nome = nome;
             this.localitaAppuntamento = localitaAppuntamento;
         }
 
         //metodo lancia eccezione se data non valida
-        private void controlloDataAppuntamento() 
+        public void controlloDataAppuntamento(DateTime dataAppuntamento) 
         {
-            if (this.dataAppuntamento < DateTime.Now)
+            if (dataAppuntamento < DateTime.Now)
             {
-                throw new InvalidTimeZoneException("Data non valida");
+                throw new ArgumentOutOfRangeException("Data non valida");
+            }
+            else
+            {
+                this.dataAppuntamento = dataAppuntamento;
             }
         }
+
+        public DateTime GetDataAppuntamento()
+        { return dataAppuntamento; }
 
         //metodo cambia la data
         public DateTime cambiaData(DateTime nuovaData) 
         {
-            if (nuovaData < DateTime.Now)
-            {
-                throw new InvalidTimeZoneException("Data non valida");
-            }
-            else 
-            { 
-                this.dataAppuntamento = nuovaData;
-            }
+            controlloDataAppuntamento(nuovaData);
             return this.dataAppuntamento;
         }
-        
+
+        public override string ToString()
+        {
+            string stampaAppuntamento = "";
+
+            stampaAppuntamento += "-----Appuntamento----- \n";
+            stampaAppuntamento += "Nome: " + this.nome + "\n";
+            stampaAppuntamento += "Data: " + this.dataAppuntamento + "\n";
+            stampaAppuntamento += "Località: " + this.localitaAppuntamento + "\n";
+            
+            return stampaAppuntamento;
+        }
+
     }
 }
