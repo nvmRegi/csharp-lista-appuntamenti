@@ -11,6 +11,7 @@ namespace ListaAppuntamenti
         public DateTime dataAppuntamento;
         private string nome;
         private string localitaAppuntamento;
+        public bool appuntamentoValido = true;
 
         public Appuntamento(DateTime dataAppuntamento, string nome, string localitaAppuntamento)
         {
@@ -18,9 +19,10 @@ namespace ListaAppuntamenti
             try
             {
                 controlloDataAppuntamento(this.dataAppuntamento); 
-            } catch (Exception ex)
+            } catch (ArgumentOutOfRangeException ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message + " Errore: " + ex.ParamName);
+                appuntamentoValido = false;
             }
 
             this.nome = nome;
@@ -32,7 +34,7 @@ namespace ListaAppuntamenti
         {
             if (dataAppuntamento < DateTime.Now)
             {
-                throw new ArgumentOutOfRangeException("Data non valida");
+                throw new ArgumentOutOfRangeException("dataAppuntamento");
             }
             else
             {
@@ -40,13 +42,23 @@ namespace ListaAppuntamenti
             }
         }
 
+        public string GetNome() 
+        { return this.nome; }
+
         public DateTime GetDataAppuntamento()
         { return dataAppuntamento; }
 
         //metodo cambia la data
         public DateTime cambiaData(DateTime nuovaData) 
         {
-            controlloDataAppuntamento(nuovaData);
+            try
+            {
+                controlloDataAppuntamento(nuovaData);
+            } catch (ArgumentOutOfRangeException ex)
+            {
+                Console.WriteLine(ex.Message + " Errore: " + ex.ParamName);
+                appuntamentoValido = false;
+            }
             return this.dataAppuntamento;
         }
 

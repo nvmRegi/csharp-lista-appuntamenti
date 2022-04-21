@@ -21,11 +21,61 @@ while(numeroAppuntamenti > 0)
     localita = Console.ReadLine();
 
     listaAppuntamenti.Add(new Appuntamento(dataUtente, nomeAppuntamento, localita));
-
-    numeroAppuntamenti--;
+    if (listaAppuntamenti[listaAppuntamenti.Count-1].appuntamentoValido)
+    {
+        numeroAppuntamenti--;
+    } else
+    {
+        Console.WriteLine("Riscrivere i dati dell'appuntamento.");
+    }
+    
 }
 
-foreach (Appuntamento elementoAppuntamento in listaAppuntamenti)
+scansionaLista();
+
+Console.ReadKey();
+
+Console.WriteLine("\nVuoi modificare un appuntamento? (si/no) ");
+
+string risposta = Console.ReadLine();
+if(risposta == "si")
 {
-    Console.WriteLine(elementoAppuntamento.ToString());
+    string ricercaNomeAppuntamento = Console.ReadLine();
+
+    int indiceNome = 0;
+    for(int i = 0; i < listaAppuntamenti.Count; i++)
+    {
+        if (ricercaNomeAppuntamento == listaAppuntamenti[i].GetNome())
+        {
+            indiceNome = i;
+        }
+    }
+
+    Console.WriteLine("Inserire la nuova data: ");
+    DateTime nuovaData = DateTime.Parse(Console.ReadLine());
+
+    do
+    {
+        listaAppuntamenti[indiceNome].cambiaData(nuovaData);
+    } while (!listaAppuntamenti[listaAppuntamenti.Count - 1].appuntamentoValido);
+    
+
+    scansionaLista();
+
+    Console.ReadKey();
+    Console.Clear();
+}
+else if(risposta == "no")
+{
+    Console.WriteLine("ARRIVEDERCI!");
+}
+
+
+//Funzione stampa
+void scansionaLista()
+{
+    foreach (Appuntamento elementoAppuntamento in listaAppuntamenti)
+    {
+        Console.WriteLine(elementoAppuntamento.ToString());
+    }
 }
