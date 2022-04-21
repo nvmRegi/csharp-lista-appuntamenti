@@ -18,10 +18,10 @@ namespace ListaAppuntamenti
             //controllo la validità della data
             try
             {
-                controlloDataAppuntamento(this.dataAppuntamento); 
+                controlloDataAppuntamento(dataAppuntamento); 
             } catch (ArgumentOutOfRangeException ex)
             {
-                Console.WriteLine(ex.Message + " Errore: " + ex.ParamName);
+                Console.WriteLine(ex.Message);
                 appuntamentoValido = false;
             }
 
@@ -34,7 +34,7 @@ namespace ListaAppuntamenti
         {
             if (dataAppuntamento < DateTime.Now)
             {
-                throw new ArgumentOutOfRangeException("dataAppuntamento");
+                throw new ArgumentOutOfRangeException("dataAppuntamento", "La data inserita è nel passato");
             }
             else
             {
@@ -51,12 +51,13 @@ namespace ListaAppuntamenti
         //metodo cambia la data
         public DateTime cambiaData(DateTime nuovaData) 
         {
+            appuntamentoValido = true;
             try
             {
                 controlloDataAppuntamento(nuovaData);
             } catch (ArgumentOutOfRangeException ex)
             {
-                Console.WriteLine(ex.Message + " Errore: " + ex.ParamName);
+                Console.WriteLine(ex.Message);
                 appuntamentoValido = false;
             }
             return this.dataAppuntamento;
@@ -66,11 +67,11 @@ namespace ListaAppuntamenti
         {
             string stampaAppuntamento = "";
 
-            stampaAppuntamento += "-----Appuntamento----- \n";
+            stampaAppuntamento += "\n-------Appuntamento------- \n";
             stampaAppuntamento += "Nome: " + this.nome + "\n";
             stampaAppuntamento += "Data: " + this.dataAppuntamento + "\n";
             stampaAppuntamento += "Località: " + this.localitaAppuntamento + "\n";
-            
+            stampaAppuntamento += "--------------------------";
             return stampaAppuntamento;
         }
 

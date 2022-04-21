@@ -13,26 +13,29 @@ string localita;
 
 while(numeroAppuntamenti > 0)
 {
+    Console.WriteLine("\n-------Appuntamento-------");
     Console.Write("Inserisci il nome dell'evento: ");
     nomeAppuntamento = Console.ReadLine();
     Console.Write("Inserisci la data dell'evento: ");
     dataUtente = DateTime.Parse(Console.ReadLine());
     Console.Write("Inserisci la località: ");
     localita = Console.ReadLine();
+    Console.WriteLine("--------------------------");
+
 
     listaAppuntamenti.Add(new Appuntamento(dataUtente, nomeAppuntamento, localita));
-    if (listaAppuntamenti[listaAppuntamenti.Count-1].appuntamentoValido)
+    if (listaAppuntamenti[listaAppuntamenti.Count - 1].appuntamentoValido)
     {
         numeroAppuntamenti--;
-    } else
-    {
-        Console.WriteLine("Riscrivere i dati dell'appuntamento.");
     }
-    
+    else
+    {
+        listaAppuntamenti.RemoveAt(listaAppuntamenti.Count - 1);
+    }
 }
 
+Console.Clear();
 scansionaLista();
-
 Console.ReadKey();
 
 Console.WriteLine("\nVuoi modificare un appuntamento? (si/no) ");
@@ -48,6 +51,7 @@ if(risposta == "si")
         if (ricercaNomeAppuntamento == listaAppuntamenti[i].GetNome())
         {
             indiceNome = i;
+            break;
         }
     }
 
@@ -58,8 +62,8 @@ if(risposta == "si")
     {
         listaAppuntamenti[indiceNome].cambiaData(nuovaData);
     } while (!listaAppuntamenti[listaAppuntamenti.Count - 1].appuntamentoValido);
-    
 
+    Console.Clear();
     scansionaLista();
 
     Console.ReadKey();
